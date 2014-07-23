@@ -1,0 +1,7 @@
+locals.zsh
+log/
+projects.zsh
+custom
+*.swp
+cache/
+
