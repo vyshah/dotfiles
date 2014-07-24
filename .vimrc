@@ -17,8 +17,8 @@ set backspace=indent,eol,start
 
 " reduce time delay when returning to normal mode
 set timeout
-set timeoutlen=50
-set ttimeoutlen=50
+set timeoutlen=1000
+set ttimeoutlen=0
 
 " don't create backups in current directory
 set backupdir=~/.vim/tmp,.
@@ -102,6 +102,7 @@ set noshowmode
 set ruler
 set textwidth=80
 set number
+set relativenumber
 
 " automatically highlight long lines in red
 highlight Over80 ctermbg=red ctermfg=white guibg=#592929
@@ -123,7 +124,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_detect_modified = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'dark'
+let g:airline_theme = 'simple'
 
 " don't use symbol if it doesn't exist
 if !exists('g:airline_symbols')
@@ -193,12 +194,19 @@ inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
 inoremap <C-Tab> <Tab>
 
+" alternative snippet key because of tab shenanigans
+imap <C-i> <Plug>snipMateNextOrTrigger
+smap <C-i> <Plug>snipMateNextOrTrigger
+smap <S-i> <Plug>snipMateBack
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COMMANDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" cabbrev for tabs
+" cabbrev for tabs and splits
 ca tn tabnew
 ca tc tabclose
+ca s split
+ca vs vsplit
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FUNCTIONS

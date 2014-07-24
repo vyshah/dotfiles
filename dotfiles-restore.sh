@@ -13,4 +13,9 @@ done
 
 echo -e "Deleting $origdir directory ..."
 rm -rf $origdir
+
+echo -e "Mapping Caps Lock back to Caps Lock ..."
+setxkbmap -option
+
 echo -e "Done."
+
