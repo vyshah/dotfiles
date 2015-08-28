@@ -7,7 +7,7 @@ snippet main
 		return 0;
 	}
 # main(void)
-snippet mainn
+snippet mainv
 	int main(void)
 	{
 		${0}
@@ -17,7 +17,7 @@ snippet mainn
 ## Preprocessor
 # #include <...>
 snippet inc
-	#include <${1:stdio}.h>
+	#include <${1:stdio.h}>
 # #include "..."
 snippet Inc
 	#include "${1:`vim_snippets#Filename("$1.h")`}"
@@ -101,19 +101,19 @@ snippet case
 ## Loops
 # for
 snippet for
-	for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) 
+	for (${2:i} = 0; $2 < ${1:count}; $2${3:++})
 	{
 		${4}
 	}
 # for (custom)
 snippet forr
-	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) 
+	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++})
 	{
 		${5}
 	}
 # while
 snippet wh
-	while (${1:/* condition */}) 
+	while (${1:/* condition */})
 	{
 		${2}
 	}

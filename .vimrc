@@ -15,6 +15,9 @@ set clipboard=unnamedplus
 " backspace over everything
 set backspace=indent,eol,start
 
+" makes resizing splits and scrolling easier
+set mouse=a
+
 " reduce time delay when returning to normal mode
 set timeout
 set timeoutlen=1000
@@ -24,8 +27,11 @@ set ttimeoutlen=0
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
 
-" make syntastic compatible with C++11
-let g:syntastic_cpp_compiler = 'g++'
+" reload vim settings whenever vimrc file is altered
+augroup newvimrc
+    au!
+    autocmd bufwritepost .vimrc source $MYVIMRC
+augroup END
 
 " start NERDTree if no files specified
 autocmd vimenter * if !argc() | NERDTree | endif
@@ -37,6 +43,9 @@ autocmd vimenter * if !argc() | NERDTree | endif
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'fatih/vim-go'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'derekwyatt/vim-scala'
 Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
@@ -49,6 +58,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'bling/vim-airline'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'tpope/vim-fugitive'
+Plugin 'henrik/vim-indexed-search'
 call vundle#end()
 filetype on
 
@@ -58,17 +68,21 @@ filetype on
 filetype plugin indent on
 syntax on
 
+" syntastic options
+let g:syntastic_cpp_compiler = 'g++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR SETTINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 set t_Co=256
-colorscheme hybrid
+colorscheme jellybeans
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " INDENTATION SETTINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" my preferred indentation settings (1 tab = 4 spaces)
+" preferred indentation settings (1 tab = 4 spaces)
 set autoindent
 set expandtab
 set shiftwidth=4
@@ -103,13 +117,14 @@ set ruler
 set textwidth=80
 set number
 set relativenumber
+set nowrap
 
 " automatically highlight long lines in red
 highlight Over80 ctermbg=red ctermfg=white guibg=#592929
 let w:long_line_match = matchadd('Over80', '\%>80v.\+', -1)
 
 " disable trailing whitespace highlighting initially
-autocmd vimenter * ToggleWhitespace
+autocmd vimenter * DisableWhitespace
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " AIRLINE SETTINGS
@@ -124,7 +139,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_detect_modified = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'simple'
+let g:airline_theme = 'dark'
 
 " don't use symbol if it doesn't exist
 if !exists('g:airline_symbols')
@@ -133,14 +148,16 @@ endif
 let g:airline_symbols.space = "\ua0"
 
 " unicode symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
+let g:airline_left_sep = ""
+let g:airline_left_alt_sep = ""
+let g:airline_right_sep = ""
+let g:airline_right_alt_sep = ""
+let g:airline#extensions#tabline#left_sep = ""
+let g:airline#extensions#tabline#right_sep = ""
 let g:airline_symbols.linenr = '␊'
 let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇  '
+let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
@@ -153,8 +170,12 @@ let g:airline_symbols.whitespace = 'Ξ'
 nnoremap ; :
 nnoremap : ;
 
-" slightly alter db behavior to match dw
+" slightly alter db and cb behavior to match dw cw
 nnoremap db dbx
+nnoremap cb dbxi
+
+"delete entire word with ctrl-backspace in insert mode
+inoremap <C-BS> <C-W>
 
 " shortcut for search and replace
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
@@ -189,15 +210,18 @@ inoremap <F5> <Esc>:ToggleWhitespace<CR>i
 nnoremap <C-F5> :StripWhitespace<CR>
 inoremap <C-F5> <Esc>:StripWhitespace<CR>i
 
+" use <F7> to indent whole file
+nnoremap <F7> mzgg=G`z
+
 " indent in new lines, else do completion
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
 inoremap <C-Tab> <Tab>
 
-" alternative snippet key because of tab shenanigans
-imap <C-i> <Plug>snipMateNextOrTrigger
-smap <C-i> <Plug>snipMateNextOrTrigger
-smap <S-i> <Plug>snipMateBack
+" change snippet trigger because of tab shenanigans (noremaps don't work)
+imap <C-j> <Plug>snipMateNextOrTrigger
+smap <C-j> <Plug>snipMateNextOrTrigger
+smap <S-j> <Plug>snipMateBack
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COMMANDS
@@ -207,6 +231,12 @@ ca tn tabnew
 ca tc tabclose
 ca s split
 ca vs vsplit
+
+" launch NERDTree
+ca nt NERDTree
+
+" Makefiles
+ca m make
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FUNCTIONS

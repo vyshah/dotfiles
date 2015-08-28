@@ -13,8 +13,12 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vimrc='vim ~/.vimrc'
 alias zshrc='vim ~/.zshrc'
 alias dimin='~/Downloads/.Dimin\ N5/dimin.py'
+alias dimin_T='~/Downloads/.Dimin\ N5/dimin_T.py'
 alias dimin_S='~/Downloads/.Dimin\ N5/dimin_S.py'
+alias dimin_F='~/Downloads/.Dimin\ N5/dimin_F.py'
+alias dimin_C='~/Downloads/.Dimin\ N5/dimin_C.py'
 alias dotfiles='cd ~/dotfiles'
+alias fitpics='feh -Z -r -S mtime -g 700x900 /home/vyshah/Pictures/Inspiration'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
