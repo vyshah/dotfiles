@@ -10,7 +10,7 @@ set nocompatible
 set noerrorbells
 
 " yanks into system clipboard by default
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 " backspace over everything
 set backspace=indent,eol,start
@@ -30,11 +30,12 @@ set directory=~/.vim/tmp,.
 " reload vim settings whenever vimrc file is altered
 augroup newvimrc
     au!
-    autocmd bufwritepost .vimrc source $MYVIMRC
+    autocmd bufwritepost .vimrc nested source $MYVIMRC
 augroup END
 
 " start NERDTree if no files specified
 autocmd vimenter * if !argc() | NERDTree | endif
+let NERDTreeShowHidden = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VUNDLE PLUGINS
@@ -59,6 +60,7 @@ Plugin 'bling/vim-airline'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'tpope/vim-fugitive'
 Plugin 'henrik/vim-indexed-search'
+Plugin 'bkad/CamelCaseMotion'
 call vundle#end()
 filetype on
 
@@ -115,9 +117,9 @@ set noshowmode
 " line length settings
 set ruler
 set textwidth=80
+set nowrap
 set number
 set relativenumber
-set nowrap
 
 " automatically highlight long lines in red
 highlight Over80 ctermbg=red ctermfg=white guibg=#592929
@@ -157,7 +159,7 @@ let g:airline#extensions#tabline#right_sep = ""
 let g:airline_symbols.linenr = '␊'
 let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = ''
+let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
@@ -207,7 +209,7 @@ nnoremap <C-Right> :tabnext<CR>
 " use <F5> to toggle trailing whitespace highlight and <S-F5> to trim it
 nnoremap <F5> :ToggleWhitespace<CR>
 inoremap <F5> <Esc>:ToggleWhitespace<CR>i
-nnoremap <C-F5> :StripWhitespace<CR>
+nnoremap <S-F5> :StripWhitespace<CR>
 inoremap <C-F5> <Esc>:StripWhitespace<CR>i
 
 " use <F7> to indent whole file
@@ -223,6 +225,13 @@ imap <C-j> <Plug>snipMateNextOrTrigger
 smap <C-j> <Plug>snipMateNextOrTrigger
 smap <S-j> <Plug>snipMateBack
 
+" change wbe to work with camelcase, underscore
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COMMANDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
