@@ -18,6 +18,12 @@ set backspace=indent,eol,start
 " makes resizing splits and scrolling easier
 set mouse=a
 
+"hides buffers instead of closing
+set hidden
+
+"set dir to current file
+set autochdir
+
 " reduce time delay when returning to normal mode
 set timeout
 set timeoutlen=1000
@@ -44,6 +50,7 @@ let NERDTreeShowHidden = 1
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'tpope/vim-surround'
 Plugin 'fatih/vim-go'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'derekwyatt/vim-scala'
@@ -61,6 +68,7 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'tpope/vim-fugitive'
 Plugin 'henrik/vim-indexed-search'
 Plugin 'bkad/CamelCaseMotion'
+Plugin 'easymotion/vim-easymotion'
 call vundle#end()
 filetype on
 
@@ -86,6 +94,7 @@ colorscheme jellybeans
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " preferred indentation settings (1 tab = 4 spaces)
 set autoindent
+set copyindent
 set expandtab
 set shiftwidth=4
 set tabstop=4
@@ -173,8 +182,8 @@ nnoremap ; :
 nnoremap : ;
 
 " slightly alter db and cb behavior to match dw cw
-nnoremap db dbx
-nnoremap cb dbxi
+nnoremap db bdw
+nnoremap cb bcw
 
 "delete entire word with ctrl-backspace in insert mode
 inoremap <C-BS> <C-W>
@@ -203,14 +212,12 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " easier tab manipulation
-nnoremap <C-Left> :tabprev<CR>
-nnoremap <C-Right> :tabnext<CR>
+nnoremap <Leader>j :tabprev<CR>
+nnoremap <Leader>k :tabnext<CR>
 
 " use <F5> to toggle trailing whitespace highlight and <S-F5> to trim it
 nnoremap <F5> :ToggleWhitespace<CR>
-inoremap <F5> <Esc>:ToggleWhitespace<CR>i
 nnoremap <S-F5> :StripWhitespace<CR>
-inoremap <C-F5> <Esc>:StripWhitespace<CR>i
 
 " use <F7> to indent whole file
 nnoremap <F7> mzgg=G`z
@@ -243,6 +250,9 @@ ca vs vsplit
 
 " launch NERDTree
 ca nt NERDTree
+
+" ctrl p
+ca cp CtrlP
 
 " Makefiles
 ca m make
